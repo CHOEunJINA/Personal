@@ -1,18 +1,24 @@
 package com.example.SummerProject.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.example.SummerProject.entity.User;
+import lombok.*;
 
 @Getter
-@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class UserDto {
+
     private String id;
     private String pw;
-    private String gender;
-    private String number;
-    private String name;
+    private String nickname;
 
-    public UserDto toEntity(String id,String pw,String gender,String number,String name){
-        return null;
+    public User toEntity(String id, String pw, String nickname) {
+        return User.builder()
+                .id(id)
+                .pw(pw)
+                .nickname(nickname)
+                .build();
     }
 }

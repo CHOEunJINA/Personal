@@ -3,31 +3,27 @@ package com.example.SummerProject.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
-public class UserEntity {
+public class User {
     @Id
+    @Column
     private String id;
 
     @Column
     private String pw;
 
     @Column
-    private String name;
+    private String nickname;
 
-    @Column
-    private String gender;
-
-    @Column
-    private String number;
-
-    public UserEntity(String id, String pw, String name, String number, String gender) {
+    @Builder
+    public User(String id, String pw, String nickname) {
         this.id = id;
         this.pw = pw;
-        this.name = name;
-        this.number = number;
-        this.gender = gender;
+        this.nickname = nickname;
     }
+
 }
