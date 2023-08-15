@@ -70,9 +70,8 @@
         </div>
         <div class="d-grid gap-2">
             <!-- 회원 가입 버튼 -->
-            <button class="btn btn-primary btn-lg" type="signUpButton"> Sign UP </button>
+            <button class="btn btn-primary btn-lg" type="button" id="signUpButton"> Sign UP </button>
         </div>
-        </form>
     </div>
 </section>
 
@@ -92,6 +91,23 @@
                 Re_enterPW: document.querySelector("#newRe-enterPW").value,
                 nickname: document.querySelector("#newNickName").value
             }
+
+
+            console.log(userInfo);
+
+            //fetch() -> 요청을 자바스크립트로 보내줌
+            const url = "signup/SignUpPage";
+            fetch(url,{
+                method: "POST",
+                body: JSON.stringify(userInfo),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(response => {
+                const msg = (response.ok) ? "회원가입이 완료되었습니다!" : "회원가입에 실패하였습니다!";
+                alert(msg);
+            });
+            //window.location.reload();
 
         });
     }
