@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 @Slf4j
 public class UserController {
-    UserService userService;
+    private UserService userService;
 
-    @Autowired
-    private UserRepository userRepository;
-
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     /*
     회원가입 페이지
-     */
+    */
     @GetMapping("/signup")
     public String showSignUp() {
         return "signup/SignUpPage";

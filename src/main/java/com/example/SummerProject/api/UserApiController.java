@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @Slf4j
 @RestController
 public class UserApiController {
@@ -24,11 +26,10 @@ public class UserApiController {
       회원 정보 저장
     */
     @PostMapping("/signup/SignUpPage")
-    public ResponseEntity<User> saveUserInfo(@RequestBody UserDto userDto) {
-        //log.info("fhrmuser"+Dto.toString());
-        User saved = userService.create(userDto);
+    public ResponseEntity<String> saveUserInfo(@RequestBody UserDto userDto) {
+        String saved = userService.create(userDto);
         return (saved != null) ?
-                ResponseEntity.status(HttpStatus.OK).body(saved):
+                ResponseEntity.status(HttpStatus.OK).body("회원가입 성공"):
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 }
