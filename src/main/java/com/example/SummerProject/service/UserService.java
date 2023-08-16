@@ -21,9 +21,9 @@ public class UserService {
     }
 
     /*
-    회원 계정 생성(id 찾기)
+    회원 계정 생성(중복되는 id 찾기)
     */
-    public String create(UserDto userDto) {
+    public User create(UserDto userDto) {
         String id = userDto.getId();
         log.info("DTO의 아이디"+ id);
 
@@ -31,7 +31,7 @@ public class UserService {
         log.info("Target"+ target);
 
         target.ifPresent(m -> {
-            throw new IllegalStateException("이미 존재하는 회원입니다.");
+            throw new IllegalStateException((String) null);
         });
 
         //1. Dto -> Entity
@@ -41,7 +41,7 @@ public class UserService {
         User saved = userRepository.save(user);
         log.info("Service 정상"+ saved.toString());
 
-        return id;
+        return saved;
 
     }
 

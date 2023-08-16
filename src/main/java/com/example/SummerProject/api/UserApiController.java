@@ -26,10 +26,11 @@ public class UserApiController {
       회원 정보 저장
     */
     @PostMapping("/signup/SignUpPage")
-    public ResponseEntity<String> saveUserInfo(@RequestBody UserDto userDto) {
-        String saved = userService.create(userDto);
+    public ResponseEntity<User> saveUserInfo(@RequestBody @Valid UserDto userDto) {
+        User saved = userService.create(userDto);
         return (saved != null) ?
-                ResponseEntity.status(HttpStatus.OK).body("회원가입 성공"):
+                ResponseEntity.status(HttpStatus.OK).body(saved):
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
+
 }
