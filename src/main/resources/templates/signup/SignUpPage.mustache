@@ -48,7 +48,7 @@
             <!-- 아이디 입력 -->
             <div class="form-group">
                 <label for="exampleInputEmail1" class="form-label mt-4"> ID(Email) </label>
-                <input type="text" class="form-control" id="newID" aria-describedby="emailHelp">
+                <input type="text" class="form-control invalid" id="newID" aria-describedby="emailHelp">
                 <div><span id="checkId"></span></div>
             </div>
             <div class="form-group has-success">
@@ -79,36 +79,68 @@
 
 </body>
 </html>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
 <script>
     {
 
+        // ID(email) 입력란 변수화
+        const emailInput = document.querySelector("#newID");
 
-        // // 아이디 일치 불일치
-        // $('#newID').keyup(function () {
-        //     let id = document.querySelector("#newID").value;
-        //     $.ajax({
-        //         url: "/idcheck.do",
-        //         method: "POST",
-        //         dataType: "json",
-        //         done: function (saved) {
-        //             if (saved == null) {
-        //                 $("#checkId").html('Available!');
-        //                 $("#checkId").html('color', '#2fb380');
-        //             } else {
-        //                 $("#checkId").html('Not Available!');
-        //                 $("#checkId").html('color', '#dc3545');
-        //             }
-        //         },
-        //         error: function () {
-        //             alert("요청 실패!");
-        //         }
-        //     })
-        // })
+        // ID(email) 형식 검증 함수
+        const validateEmail = (email) => {
+            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+            return emailPattern.test(email);
+        };
 
-    }
+        // ID(email) 형식 확인 함수
+        const checkEmail = () => {
+            const email = emailInput.value;
+            const emailMessage = document.querySelector("#checkId");
 
-    {
+            if (validateEmail(email)) {
+                emailMessage.textContent = 'Valid email format';
+                emailMessage.style.color = '#2fb380';
+                emailInput.classList.remove("is-invalid");
+                emailInput.classList.add("is-valid");
+            } else {
+                emailMessage.textContent = 'Invalid email format';
+                emailMessage.style.color = '#dc3545';
+                emailInput.classList.remove("is-valid");
+                emailInput.classList.add("is-invalid");
+            }
+        };
+
+        // ID(email) 입력란에 keyup 이벤트 핸들러 추가
+        emailInput.addEventListener("keyup", checkEmail);
+
+        // 비밀번호 재확인 입력란 변수화
+        const newReEnterPWInput = document.querySelector("#newRe-enterPW");
+
+        // 비밀번호 일치 여부 확인 함수
+        const checkPasswordMatch = () => {
+            const newPassword = document.querySelector("#newPW").value;
+            const reEnteredPassword = newReEnterPWInput.value;
+            const checkMessage = document.querySelector("#checkPw");
+
+            if (newPassword !== "" || reEnteredPassword !== "") {
+                if (newPassword !== reEnteredPassword) {
+                    checkMessage.textContent = 'Password do not match';
+                    checkMessage.style.color = '#dc3545';
+                    newReEnterPWInput.classList.remove("is-valid");
+                    newReEnterPWInput.classList.add("is-invalid");
+                } else {
+                    checkMessage.textContent = 'Password is match';
+                    checkMessage.style.color = '#2fb380';
+                    newReEnterPWInput.classList.remove("is-invalid");
+                    newReEnterPWInput.classList.add("is-valid");
+                }
+            }
+        };
+
+
+        // 비밀번호 재확인 입력란에 keyup 이벤트 핸들러 추가
+        newReEnterPWInput.addEventListener("keyup", checkPasswordMatch);
+
         // Sign Up 버튼 변수화
         const userInfoBtn = document.querySelector("#signUpButton");
 
@@ -126,65 +158,25 @@
 
             //fetch() -> 요청을 자바스크립트로 보내줌
             const url = "signup/SignUpPage";
-            fetch(url,{
+            fetch(url, {
                 method: "POST",
                 body: JSON.stringify(userInfo),
                 headers: {
                     "Content-Type": "application/json"
                 }
             }).then(response => {
-                if(response.ok){
+                if (response.ok) {
                     alert("회원가입이 완료되었습니다!");
-                    window.location.href='/main'; // 메인 페이지로 넘어감
+                    window.location.href = '/main'; // 메인 페이지로 넘어감
+                } else {
+                    alert("회원가입에 실패하였습니다!");
+                    window.location.reload();
                 }
             }).catch(err => {
-                alert("회원가입에 실패하였습니다!");
-            })
+                console.log("에러");
+            });
         });
 
-    }
-    {
-
-            // 비밀번호 일치 불일치
-            $('#newRe-enterPW').keyup(function () {
-                let pw = document.querySelector("#newPW").value;
-                let rePw = document.querySelector("#newRe-enterPW").value;
-
-                    if (pw !== "" || rePw !== "") {
-                        if (pw !== rePw) {
-                            $("#checkPw").html('Password do not match');
-                            $("#checkPw").css('color', '#dc3545');
-                            $("#newRe-enterPW").removeClass("is-valid");
-                            $("#newRe-enterPW").addClass("is-invalid");
-                        } else {
-                            // 비밀번호가 일치할 때 fetch 요청 보내기
-                            const url = "signup/SignUpPage";
-                            fetch(url, {
-                                method: "POST",
-                                body: JSON.stringify(),
-                                headers: {
-                                    "Content-Type": "application/json"
-                                }
-                            }).then(response => response.json()) // 응답을 JSON 형태로 변환
-                                    .then(data => {
-                                        if (data.match) {
-                                            $("#checkPw").html('Password is match');
-                                            $("#checkPw").css('color', '#2fb380');
-                                            $("#newRe-enterPW").addClass("is-valid");
-                                            $("#newRe-enterPW").removeClass("is-invalid");
-                                        } else {
-                                            $("#checkPw").html('Password do not match');
-                                            $("#checkPw").css('color', '#dc3545');
-                                            $("#newRe-enterPW").removeClass("is-valid");
-                                            $("#newRe-enterPW").addClass("is-invalid");
-                                        }
-                                    })
-                                    .catch(error => {
-                                        console.error("Error:", error);
-                                    });
-                        }
-                    }
-                });
 
     }
 
