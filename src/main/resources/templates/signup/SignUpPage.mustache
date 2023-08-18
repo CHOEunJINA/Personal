@@ -68,7 +68,8 @@
         <div class="form-group">
             <!-- 닉네임 입력 -->
             <label for="exampleInputEmail1" class="form-label mt-4"> NickName </label>
-            <input type="text" class="form-control" id="newNickName" aria-describedby="emailHelp">
+            <input type="text" class="form-control invalid" id="newNickName" aria-describedby="emailHelp">
+            <div><span id="checkNickName"></span></div>
         </div>
         <div class="d-grid gap-2">
             <!-- 회원 가입 버튼 -->
@@ -82,41 +83,40 @@
 <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
 <script>
     {
-
         // ID(email) 입력란 변수화
-        const emailInput = document.querySelector("#newID");
+        const idInput = document.querySelector("#newID");
 
-        // ID(email) 형식 검증 함수
+        // ID(email) 형식 검증
         const validateEmail = (email) => {
             const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
             return emailPattern.test(email);
         };
 
-        // ID(email) 형식 확인 함수
+        // ID(email) 형식 확인
         const checkEmail = () => {
-            const email = emailInput.value;
+            const email = idInput.value;
             const emailMessage = document.querySelector("#checkId");
 
             if (validateEmail(email)) {
                 emailMessage.textContent = 'Valid email format';
                 emailMessage.style.color = '#2fb380';
-                emailInput.classList.remove("is-invalid");
-                emailInput.classList.add("is-valid");
+                idInput.classList.remove("is-invalid");
+                idInput.classList.add("is-valid");
             } else {
                 emailMessage.textContent = 'Invalid email format';
                 emailMessage.style.color = '#dc3545';
-                emailInput.classList.remove("is-valid");
-                emailInput.classList.add("is-invalid");
+                idInput.classList.remove("is-valid");
+                idInput.classList.add("is-invalid");
             }
         };
 
         // ID(email) 입력란에 keyup 이벤트 핸들러 추가
-        emailInput.addEventListener("keyup", checkEmail);
+        idInput.addEventListener("keyup", checkEmail);
 
         // 비밀번호 재확인 입력란 변수화
         const newReEnterPWInput = document.querySelector("#newRe-enterPW");
 
-        // 비밀번호 일치 여부 확인 함수
+        // 비밀번호 일치 여부 확인
         const checkPasswordMatch = () => {
             const newPassword = document.querySelector("#newPW").value;
             const reEnteredPassword = newReEnterPWInput.value;
@@ -140,6 +140,36 @@
 
         // 비밀번호 재확인 입력란에 keyup 이벤트 핸들러 추가
         newReEnterPWInput.addEventListener("keyup", checkPasswordMatch);
+
+        // // nickname 입력란 변수화
+        // const nicknameInput = document.querySelector("#newNickName");
+        //
+        // // nickname 검증
+        // const validateNickName = (NickName) => {
+        //     if(!NickName.nickname)
+        //     return false;
+        // };
+        //
+        // // nickname 중복 여부 확인
+        // const checkNickName = (input) => {
+        //     const check = nicknameInput.value;
+        //     const checkMessage = document.querySelector("#checkNickName");
+        //
+        //         if (check!=="" ||check == input) {
+        //             checkMessage.textContent = 'Unavailable';
+        //             checkMessage.style.color = '#dc3545';
+        //             newReEnterPWInput.classList.remove("is-valid");
+        //             newReEnterPWInput.classList.add("is-invalid");
+        //         } else {
+        //             checkMessage.textContent = 'Available';
+        //             checkMessage.style.color = '#2fb380';
+        //             newReEnterPWInput.classList.remove("is-invalid");
+        //             newReEnterPWInput.classList.add("is-valid");
+        //         }
+        //
+        // };
+        //
+        // nicknameInput.addEventListener("keyup",checkNickName)
 
         // Sign Up 버튼 변수화
         const userInfoBtn = document.querySelector("#signUpButton");
@@ -165,7 +195,7 @@
                     "Content-Type": "application/json"
                 }
             }).then(response => {
-                if (response.ok) {
+                if (response.ok && validateEmail(idInput)) {
                     alert("회원가입이 완료되었습니다!");
                     window.location.href = '/main'; // 메인 페이지로 넘어감
                 } else {
