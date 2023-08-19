@@ -31,7 +31,7 @@ public class UserService {
         log.info("Target"+ target);
 
         target.ifPresent(m -> {
-            throw new IllegalStateException((String) null);
+            throw new IllegalStateException("이미 존재하는 회원입니다!");
         });
 
         //1. Dto -> Entity
@@ -43,6 +43,13 @@ public class UserService {
 
         return saved;
 
+    }
+    // 닉네임 중복확인
+    public boolean existsByNickname(String nickname){
+
+        boolean result = userRepository.existsByNickname(nickname);
+
+        return result;
     }
 
 

@@ -7,9 +7,7 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -30,6 +28,17 @@ public class UserApiController {
         User saved = userService.create(userDto);
         return (saved != null) ?
                 ResponseEntity.status(HttpStatus.OK).body(saved):
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    /*
+    닉네임 중복확인
+     */
+    @GetMapping("/signup/SignUpPage/{nickname}")
+    public ResponseEntity<Boolean> checkNickName(@PathVariable String nickname){
+        boolean result = userService.existsByNickname(nickname);
+        return (result!=true) ?
+                ResponseEntity.status(HttpStatus.OK).body(true):
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 

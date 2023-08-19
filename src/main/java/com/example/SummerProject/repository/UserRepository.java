@@ -10,6 +10,6 @@ public interface UserRepository extends CrudRepository<User,String> {
     User save(User user);
     Optional<User> findById(String id);
     List<User> findAll();
-
+    boolean existsByNickname(String nickname);
 }
 

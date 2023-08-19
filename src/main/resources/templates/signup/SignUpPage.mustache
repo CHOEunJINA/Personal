@@ -14,20 +14,34 @@
             width: 503px;
         }
 
+        /*<!-- nickname 입력창 -->*/
+        .form-group-nickname {
+            margin: 0 auto;
+            width: 403px;
+            position: relative;
+            right: 39px;
+        }
+
+        /*<!-- nickname 버튼 -->*/
+        .form-group-nickname-button {
+            margin: 0 auto;
+            padding-left: 5px;
+            position: relative;
+            top: -40px;
+            left: 403px;
+        }
+
+        /*<!-- nickname 버튼 밑의 메세지 -->*/
+        .form-group-nickname-message {
+            position: relative;
+            top: -38px;
+        }
+
         /*<!-- 회원가입 버튼 -->*/
         .d-grid.gap-2 {
             padding-top: 30px;
         }
 
-        /*<!-- 생년월일 -->*/
-        .bir_yy, .bir_mm, .bir_dd {
-            width: 160px;
-            display: table-cell;
-        }
-
-        .bir_yy, .bir_mm, .bir_dd {
-            padding-left: 10px;
-        }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -65,11 +79,19 @@
             <div><span id="checkPw"></span></div>
 
         </div>
-        <div class="form-group">
+        <div class="form-group-nickname">
+            <label for="newNickName" class="form-label mt-4">NickName</label>
             <!-- 닉네임 입력 -->
-            <label for="exampleInputEmail1" class="form-label mt-4"> NickName </label>
-            <input type="text" class="form-control invalid" id="newNickName" aria-describedby="emailHelp">
-            <div><span id="checkNickName"></span></div>
+            <div class="input-group">
+                <input type="text" class="form-control" id="newNickName">
+            </div>
+            <div class="form-group-nickname-button">
+                <span class="form-group-button"></span>
+                <button class="btn btn-primary" type="button" id="checkNickNameButton" style="position:relative; ">
+                    Check
+                </button>
+            </div>
+            <div class="form-group-nickname-message"><span id="checkNickName"></span></div>
         </div>
         <div class="d-grid gap-2">
             <!-- 회원 가입 버튼 -->
@@ -137,39 +159,39 @@
             }
         };
 
-
         // 비밀번호 재확인 입력란에 keyup 이벤트 핸들러 추가
         newReEnterPWInput.addEventListener("keyup", checkPasswordMatch);
 
-        // // nickname 입력란 변수화
-        // const nicknameInput = document.querySelector("#newNickName");
-        //
-        // // nickname 검증
-        // const validateNickName = (NickName) => {
-        //     if(!NickName.nickname)
-        //     return false;
-        // };
-        //
-        // // nickname 중복 여부 확인
-        // const checkNickName = (input) => {
-        //     const check = nicknameInput.value;
-        //     const checkMessage = document.querySelector("#checkNickName");
-        //
-        //         if (check!=="" ||check == input) {
-        //             checkMessage.textContent = 'Unavailable';
-        //             checkMessage.style.color = '#dc3545';
-        //             newReEnterPWInput.classList.remove("is-valid");
-        //             newReEnterPWInput.classList.add("is-invalid");
-        //         } else {
-        //             checkMessage.textContent = 'Available';
-        //             checkMessage.style.color = '#2fb380';
-        //             newReEnterPWInput.classList.remove("is-invalid");
-        //             newReEnterPWInput.classList.add("is-valid");
-        //         }
-        //
-        // };
-        //
-        // nicknameInput.addEventListener("keyup",checkNickName)
+        // nickname 입력란 변수화
+        const nicknameInput = document.querySelector("#newNickName");
+
+        // nickname check 메시지
+        const checkMessage = document.querySelector("#checkNickName");
+
+        // check 버튼 변수화
+        const checkNickNameButton = document.querySelector("#checkNickNameButton");
+
+        // check 버튼 클릭 이벤트 감지
+        checkNickNameButton.addEventListener("click", function () {
+            const url = "/signup/SignUpPage/" + nicknameInput.value;
+            fetch(url, {
+                method: "GET"
+            }).then(response => {
+                if (response.ok) {
+                    checkMessage.textContent = 'Available';
+                    checkMessage.style.color = '#2fb380';
+                    nicknameInput.classList.remove("is-invalid");
+                    nicknameInput.classList.add("is-valid");
+                } else {
+                    checkMessage.textContent = 'Unavailable';
+                    checkMessage.style.color = '#dc3545';
+                    nicknameInput.classList.remove("is-valid");
+                    nicknameInput.classList.add("is-invalid");
+                }
+            }).catch(err => {
+                console.log(err);
+            })
+        });
 
         // Sign Up 버튼 변수화
         const userInfoBtn = document.querySelector("#signUpButton");
@@ -183,6 +205,10 @@
                 nickname: document.querySelector("#newNickName").value
             }
 
+            if (!validateEmail(userInfo.id)) {
+                alert("이메일 형식이 맞지않습니다!");
+                return;
+            }
 
             console.log(userInfo);
 
@@ -195,7 +221,7 @@
                     "Content-Type": "application/json"
                 }
             }).then(response => {
-                if (response.ok && validateEmail(idInput)) {
+                if (response.ok) {
                     alert("회원가입이 완료되었습니다!");
                     window.location.href = '/main'; // 메인 페이지로 넘어감
                 } else {
@@ -203,7 +229,7 @@
                     window.location.reload();
                 }
             }).catch(err => {
-                console.log("에러");
+                console.log(err);
             });
         });
 
