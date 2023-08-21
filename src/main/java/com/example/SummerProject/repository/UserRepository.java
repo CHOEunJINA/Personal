@@ -1,10 +1,12 @@
-/*
 package com.example.SummerProject.repository;
 
-import com.example.SummerProject.entity.UserEntity;
+import com.example.SummerProject.entity.User;
 import org.springframework.data.repository.CrudRepository;
 
-public interface UserRepository extends CrudRepository<UserEntity,String> {
+import java.util.List;
+import java.util.Optional;
+
+public interface UserRepository extends CrudRepository<User,String> {
+    boolean existsByNickname(String nickname);
 }
 
- */
