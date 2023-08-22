@@ -24,5 +24,6 @@ public class ChatRoomDto {
     }
     public Chatroom toEntity(){
         return new Chatroom(roomid);
+
     }
 }
