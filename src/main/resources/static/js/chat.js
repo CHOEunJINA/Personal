@@ -1,64 +1,41 @@
-// Demo data
-var contacts = [
-    { id: 1, name: "John Doe" },
-    { id: 2, name: "Jane Smith" },
-];
+const socket = new SockJS('http://localhost:8080/gs-guide-websocket');
 
-var chatRooms = {
-    1: { name: "John Doe", messages: [] },
-    2: { name: "Jane Smith", messages: [] },
+let stompClient = null;
+socket.addEventListener('open', () => {
+    stompClient = Stomp.over(socket);
+
+    function displayMessage(message) {
+        console.log(message);
+    }
+
+    stompClient.connect({}, (frame) => {
+        // 경로 이후에 재설정 필요 roomid 로 재설정해야함
+        stompClient.subscribe('/pub/messages', (message) => {
+            displayMessage(JSON.parse(message.body));
+        });
+    });
+});
+socket.onopen = function (event) {
+    console.log('WebSocket 연결이 성공적으로 열림:', event);
 };
 
-// Create contact list
-var contactsList = document.getElementById("contacts-list");
-contacts.forEach(function (contact) {
-    var listItem = document.createElement("a");
-    listItem.href = "#";
-    listItem.classList.add("list-group-item", "list-group-item-action");
-    listItem.setAttribute("data-toggle", "list");
-    listItem.textContent = contact.name;
-    listItem.dataset.id = contact.id;
+socket.onerror = function (error) {
+    console.log('WebSocket 연결 중 오류 발생:', error);
+};
+document.addEventListener('DOMContentLoaded',()=>{
+    const chatInput = document.getElementById('chat-input');
+    const sendMessageButton = document.getElementById('sendMessageButton');
 
-    listItem.addEventListener("click", loadChatRoom);
-
-    contactsList.appendChild(listItem);
-});
-
-var currentRoomId = null;
-var chatContainer = document.getElementById("chat-container");
-var chatHeader = document.getElementById("chat-header");
-var chatBody = document.getElementById("chat-body");
-var messageInput = document.getElementById("message-input");
-var messageForm = document.getElementById("message-form");
-
-function loadChatRoom(event) {
-    event.preventDefault();
-    var roomId = event.currentTarget.dataset.id;
-    var roomData = chatRooms[roomId];
-
-    currentRoomId = roomId;
-    chatHeader.textContent = roomData.name;
-    chatBody.innerHTML = "";
-    roomData.messages.forEach(function (message) {
-        var messageElement = document.createElement("p");
-        messageElement.textContent = message;
-        chatBody.appendChild(messageElement);
+    sendMessageButton.addEventListener('click', () => {
+        sendMessage(chatInput.value, chatInput);
     });
+})
 
-    chatContainer.style.display = 'flex';
+function sendMessage(message, chatInput) {
+    // 연결이되어있고 메시지가 비어있는게 아니라면 /app/chat 주소로 메시지 데이터를 JSON 형식으로 전송
+    if (stompClient && message) {
+        stompClient.send("/app/chat", {}, JSON.stringify({ 'content': message }));
+
+        chatInput.value = "";
+    }
 }
-
-messageForm.addEventListener("submit", function (event) {
-    event.preventDefault();
-    var messageText = messageInput.value;
-    messageInput.value = "";
-
-    var messageElement = document.createElement("p");
-    messageElement.textContent = messageText;
-    chatBody.appendChild(messageElement);
-
-    chatRooms[currentRoomId].messages.push(messageText);
-
-    // TODO: 스프링 서버로 요청 보내기 메소드 추가
-
-});

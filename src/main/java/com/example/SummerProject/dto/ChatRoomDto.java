@@ -1,6 +1,6 @@
 package com.example.SummerProject.dto;
 
-import com.example.SummerProject.entity.ChatRoom;
+import com.example.SummerProject.entity.Chatroom;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -22,7 +22,7 @@ public class ChatRoomDto {
     public ChatRoomDto(){
         this.roomid = UUID.randomUUID().toString();
     }
-    public ChatRoom toEntity(){
-        return new ChatRoom(roomid);
+    public Chatroom toEntity(){
+        return new Chatroom(roomid);
     }
 }

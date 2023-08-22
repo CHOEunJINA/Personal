@@ -23,7 +23,7 @@ public class Message {
 
     @ManyToOne
     @JoinColumn(name = "roomid")
-    private ChatRoom chatRoom;
+    private Chatroom chatRoom;
 
     public Message(String message, String sender, String reciver) {
         this.message = message;

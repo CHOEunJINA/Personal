@@ -10,4 +10,11 @@ public class MainController {
     public String showMain(){
         return "MainPage";
     }
+
+    // 테스트용
+    @GetMapping("/chat")
+    public String showChatView(){
+        return "chat/Message";
+    }
+
 }

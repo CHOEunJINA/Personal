@@ -14,14 +14,14 @@ import java.util.Set;
  */
 @Entity
 @NoArgsConstructor
-public class ChatRoom {
+public class Chatroom {
     @Id
     private String roomid;
 
     @OneToMany(mappedBy = "chatRoom")
     private Set<Message> messages;
 
-    public ChatRoom(String roomid) {
+    public Chatroom(String roomid) {
         this.roomid = roomid;
     }
 

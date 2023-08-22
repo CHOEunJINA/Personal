@@ -1,5 +1,6 @@
 package com.example.SummerProject.controller;
 
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 
 /*
@@ -8,4 +9,7 @@ import org.springframework.stereotype.Controller;
  */
 public class MessageController {
     // 메시지 전송 로직
+    /*
+        @MessageMapping
+     */
 }
