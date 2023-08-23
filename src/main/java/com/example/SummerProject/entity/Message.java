@@ -1,6 +1,7 @@
 package com.example.SummerProject.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 /*
@@ -11,11 +12,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Message {
     @Id
-    @GeneratedValue
+    @GeneratedValue (strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(columnDefinition = "TEXT")
-    private String message;
+    private String content;
     @Column
     private String sender;
     @Column
@@ -25,8 +26,9 @@ public class Message {
     @JoinColumn(name = "roomid")
     private Chatroom chatRoom;
 
-    public Message(String message, String sender, String reciver) {
-        this.message = message;
+    @Builder
+    public Message(String content, String sender, String reciver) {
+        this.content = content;
         this.sender = sender;
         this.reciver = reciver;
     }

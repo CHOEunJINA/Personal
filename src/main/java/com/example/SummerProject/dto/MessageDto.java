@@ -15,10 +15,10 @@ import lombok.ToString;
     주요 기능 : entity 변환 기능, 생정자를 통해 입력받은 정보를 담아두는 기능
  */
 public class MessageDto {
-    public String message;
+    public String content;
     public String sender;
     public String reciver;
     public Message toEntity(){
-        return new Message(message,sender,reciver);
+        return new Message(content,sender,reciver);
     }
 }

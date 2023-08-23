@@ -17,4 +17,9 @@ public class MainController {
         return "chat/Message";
     }
 
+    @GetMapping("/mypage")
+    public String showMypageView(){
+        return "mypage/mypage";
+    }
+
 }

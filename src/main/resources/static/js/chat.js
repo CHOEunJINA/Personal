@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 function sendMessage(message, chatInput) {
     // 연결이되어있고 메시지가 비어있는게 아니라면 /app/chat 주소로 메시지 데이터를 JSON 형식으로 전송
     if (stompClient && message) {
-        stompClient.send("/app/chat", {}, JSON.stringify({ 'content': message }));
+        stompClient.send("/app/chat", {}, JSON.stringify({ 'content': message, 'sender' : "asd", 'reciver' : "조봉균" , 'roomid' : "skr"}));
 
         chatInput.value = "";
     }
