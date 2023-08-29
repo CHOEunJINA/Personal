@@ -25,5 +25,13 @@ public class UserController {
         return "signup/SignUpPage";
     }
 
+    /*
+    로그인 후 페이지 넘어감
+     */
+    @GetMapping("/login")
+    public String showLogin(){
+        return "LoginPage";
+    }
+
 
 }
