@@ -3,7 +3,7 @@
 <header class="masthead bg-primary text-white text-center">
     <div class="container d-flex align-items-center flex-column">
         <!-- Masthead Avatar Image-->
-        <img class="masthead-avatar mb-5" src="assets/img/avataaars.svg" alt="..." />
+        <img class="masthead-avatar mb-5" src="assets/img/avataaars.svg" alt="..."/>
         <!-- Masthead Heading-->
         <h1 class="masthead-heading text-uppercase mb-0">Life`s Synapse</h1>
         <!-- Icon Divider-->
@@ -39,16 +39,16 @@
                 <form id="contactForm" data-sb-form-api-token="API_TOKEN">
                     <!-- id 입력란 -->
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="id" type="text" placeholder="ID" data-sb-validations="required" />
+                        <input class="form-control" id="id" type="text" placeholder="ID"
+                               data-sb-validations="required"/>
                         <label for="name">ID</label>
                         <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
                     </div>
                     <!-- password 입력란-->
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="password" type="password" placeholder="name@example.com" data-sb-validations="required,email" />
+                        <input class="form-control" id="password" type="password" placeholder="name@example.com"
+                               data-sb-validations="required,email"/>
                         <label for="email">Password</label>
-                        <div class="invalid-feedback" data-sb-feedback="email:required">An email is required.</div>
-                        <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
                     </div>
 
                     <!---->
@@ -58,7 +58,7 @@
                         <div class="text-center mb-3">
                             <div class="fw-bolder">Form submission successful!</div>
                             To activate this form, sign up at
-                            <br />
+                            <br/>
                             <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
                         </div>
                     </div>
@@ -66,10 +66,20 @@
                     <!---->
                     <!-- This is what your users will see when there is-->
                     <!-- an error submitting the form-->
-                    <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
+                    <div class="d-none" id="submitErrorMessage">
+                        <div class="text-center text-danger mb-3">Error sending message!</div>
+                    </div>
 
                     <!-- Login Button-->
-                    <button class="btn btn-primary btn-xl" id="LoginButton" type="button" href="/MainPage/login"> Login </button>
+                    <button class="btn btn-primary btn-xl" id="LoginButton" type="button" href="/MainPage/login">
+                        Login
+                    </button>
+                    <div>
+                        <a href="@{|kakaoURL|}">
+                            <img src="/assets/img/kakao_login_medium.png" height="45px"
+                                 style="position:relative; top:20px">
+                        </a>
+                    </div>
 
                 </form>
             </div>
@@ -86,12 +96,12 @@
 
 
     // 로그인 버튼 클릭 시 이벤트
-    LoginButton.addEventListener("click", function (){
+    LoginButton.addEventListener("click", function () {
         const loginInfo = {
             id: document.querySelector("#id").value,
             password: document.querySelector("#password").value
         }
-        const url="/MainPage";
+        const url = "/MainPage";
 
         fetch(url, {
             method: "POST",
@@ -99,14 +109,13 @@
             headers: {
                 "Content-Type": "application/json"
             }
-        }).then(response=>{
-            if(response.ok){
+        }).then(response => {
+            if (response.ok) {
                 alert("로그인이 완료되었습니다!");
                 location.assign("/login");
-            }
-            else
+            } else
                 alert("회원 정보가 없습니다!");
-        }).catch(err=>{
+        }).catch(err => {
             console.log(err);
         })
 
